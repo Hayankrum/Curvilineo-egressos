@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<title>Responder - Fórum</title>
+
+<h1>Responder ao Tópico: {{ topic.title }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Adicionar Resposta</button>
+</form>
+<a href="{% url 'topic_list' topic.subcategoria.id %}">Voltar</a>
+
+{% endblock %}

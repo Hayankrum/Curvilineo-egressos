@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="box_post">
+    <div class="modal-box">
+        <h2>Login</h2>
+        <div class="modal-content">
+            <form method="post" action="{% url 'userapp:login' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="email">Seu e-mail *</label>
+                    <!--<input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>-->
+                    <input type="text" id="username" name="username" placeholder="Digite seu nick" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Sua senha *</label>
+                    <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
+                    <!--<input type="password" name="password" id="password" required>-->
+                </div>
+
+
+
+                <button type="submit" class="btn">Logar</button>
+                <button class="btn"><a href="{% url 'userapp:register' %}">Criar conta</a></button>
+                <a href="{% url 'userapp:password_reset' %}">Redefinir senha</a>
+            </form>
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

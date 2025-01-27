@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load static %} <!-- Adicionando esta linha para carregar a tag static -->
+
+{% block content %}
+<div class="profile-container">
+    <h2>Seja bem vindo a</h2>
+    <span>Curvilíneo egressos</span>
+    {% if user.is_authenticated %}
+    <div class="profile-info">
+        <p>{{ user.username }}</p>
+    </div>
+    {% else %}
+    <p><a href="{% url 'userapp:login' %}">Você precisa estar logado primeiro</a></p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% load static %}  <!-- Carregar a tag static -->
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2>Editar Perfil</h2>
+        </div>
+        <div class="card-body">
+            <!-- Exibir mensagens de sucesso ou erro -->
+            {% if messages %}
+                <div class="mb-3">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Exibir imagem atual ou imagem padrão -->
+            <div class="mb-3 text-center">
+                {% if user.userprofile.profile_picture %}
+                    <img src="{{ user.userprofile.profile_picture.url }}" alt="Foto de Perfil" class="img-thumbnail" style="max-width: 200px;">
+                {% else %}
+                    <img src="{% static 'img/user.svg' %}" alt="Foto de Perfil Padrão" class="img-thumbnail" style="max-width: 200px;">
+                {% endif %}
+            </div>
+
+            <!-- Formulário de edição de perfil -->
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <button type="submit" class="btn btn-primary mt-3">Salvar Alterações</button>
+                <a href="{% url 'userapp:profile' %}" class="btn btn-secondary mt-3">Voltar ao Perfil</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

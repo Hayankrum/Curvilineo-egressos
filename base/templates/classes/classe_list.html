@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load custom_filters %}
+<title>Classes - Fórum</title>
+
+<h2>Classes</h2>
+{% if user.is_authenticated %}
+<!-- Link para criar classe, visível apenas para administradores -->
+{% if request.user|can_create %}
+<a href="{% url 'create_classe' %}">Criar Classe</a>
+{% endif %}
+
+<ul>
+    {% for classe in classes %}
+    <div class="box_post">
+
+        <li>
+            <a href="{% url 'subcategoria_list' classe.id %}">{{ classe.name }}</a>
+
+            <!-- Links de edição e exclusão visíveis apenas para administradores -->
+            {% if request.user|can_create %}
+            <a href="{% url 'edit_classe' classe.id %}"><button>Editar</button></a>
+            <a href="{% url 'delete_classe' classe.id %}"><button
+                    onclick="return confirm('Tem certeza?');">Excluir</button></a>
+            {% endif %}
+        </li>
+
+    </div>
+    {% endfor %}
+</ul>
+{% else %}
+<p><a href="{% url 'userapp:login' %}">LOGIN necessario</a></p>
+{% endif %}
+{% endblock %}

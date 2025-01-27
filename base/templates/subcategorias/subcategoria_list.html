@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block content %}
+<title>Subcategorias - {{ classe.name }}</title>
+
+<h2>Subcategorias de {{ classe.name }}</h2>
+
+<!-- Exibe a descrição da classe -->
+<p><strong>Descrição:</strong> {{ classe.description }}</p>
+
+<!-- Link para criar subcategoria, visível apenas para administradores -->
+{% if request.user|can_create %}
+<a href="{% url 'create_subcategoria' classe.id %}">Criar Subcategoria</a>
+{% endif %}
+
+<ul>
+    {% for subcategoria in subcategorias %}
+    <div class="box_post">
+
+        <li>
+            <a href="{% url 'topic_list' subcategoria.id %}">{{ subcategoria.name }}</a>
+            
+            <!-- Links de edição e exclusão visíveis apenas para administradores -->
+            {% if request.user|can_create %}
+            <a href="{% url 'edit_subcategoria' subcategoria.id %}"><button>Editar</button></a>
+            <a href="{% url 'delete_subcategoria' subcategoria.id %}"><button onclick="return confirm('Tem certeza?');">Excluir</button></a>
+            {% endif %}
+        </li>
+    </div>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'classe_list' %}">Voltar</a>
+
+{% endblock %}

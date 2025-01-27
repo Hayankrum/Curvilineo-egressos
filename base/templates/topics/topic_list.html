@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block content %}
+
+<title>Tópicos - {{ subcategoria.name }}</title>
+
+<h1>Tópicos da Subcategoria: {{ subcategoria.name }}</h1>
+
+<!-- Exibe a descrição da subcategoria -->
+<p><strong>Descrição:</strong> {{ subcategoria.description }}</p>
+
+
+<details>
+    <summary>Tags</summary>
+    {% if request.user|can_create %}
+    <a href="{% url 'create_tag' %}">Criar Nova Tag</a>
+    {% endif %}
+    <ul>
+        {% for tag in tags %}
+
+
+        <li>
+            <a href="{% url 'topics_by_tag' tag.id %}">{{ tag.name }}</a>
+            <!-- Exibe o número de tópicos associados à tag -->
+            ({{ tag.topics.count }})
+            {% csrf_token %}
+
+        </li>
+
+        {% endfor %}
+    </ul>
+
+</details>
+
+
+<!-- Link para criar um novo tópico, visível apenas para usuários autenticados -->
+{% if user.is_authenticated %}
+<a href="{% url 'create_topic' subcategoria.id %}">Criar novo tópico</a>
+{% else %}
+<p>Você precisa estar <a href="{% url 'userapp:login' %}">logado</a> para criar um tópico.</p>
+{% endif %}
+
+<ul>
+    {% for topic in topics %}
+    <div class="box_post">
+
+        <li>
+            <a href="{% url 'topic_detail' topic.id %}">{{ topic.title }}</a>
+            <p>{{ topic.created_at|timesince }}</p>
+
+        </li>
+    </div>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'subcategoria_list' subcategoria.classe.id %}">Voltar</a>
+
+{% endblock %}

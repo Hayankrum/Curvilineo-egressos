@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<title>Editar Resposta</title>
+
+<h1>Editar Resposta</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Salvar Alterações</button>
+</form>
+<a href="{% url 'topic_detail' reply.topic.id %}">Cancelar</a>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load custom_filters %}
+<h2>Posts</h2>
+<p>- ---- -</p>
+
+{% if request.user|can_create %}
+<a href="{% url 'post_create' %}">Create Post</a>
+{% endif %}
+<ul>
+    {% for post in posts %}
+    <div class="box_post">
+
+        <li>
+            <h2>{{ post.title }}</h2>
+            <div>
+                {{ post.content.html|safe }}
+            </div>
+            {% if request.user|can_create %}
+            <a href="{% url 'post_edit' post.pk %}">Edit</a>
+            <a href="{% url 'post_delete' post.pk %}">Delete</a>
+            {% endif %}
+        </li>
+    </div>
+    {% endfor %}
+</ul>
+{% endblock %}

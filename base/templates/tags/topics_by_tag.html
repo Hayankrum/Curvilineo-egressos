@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Tópicos com a Tag "{{ tag.name }}"</h1>
+<ul>
+    {% for topic in topics %}
+        <li><a href="{% url 'topic_detail' topic.id %}">{{ topic.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

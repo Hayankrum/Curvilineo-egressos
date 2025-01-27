@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% load static %} <!-- Adicionando esta linha para carregar a tag static -->
+
+{% block content %}
+<div class="profile-container">
+    <h2>Perfil de {{ user.username }}</h2>
+
+    <div class="profile-info">
+
+        <!-- Exibindo foto de perfil -->
+        <div class="profile-picture">
+            {% if user.userprofile.profile_picture %}
+            <img src="{{ user.userprofile.profile_picture.url }}" alt="Foto de Perfil" class="img-thumbnail"
+                style="max-width: 200px;">
+            {% else %}
+            <img src="{% static 'img/user.svg' %}" alt="Foto de Perfil Padrão" class="img-thumbnail"
+                style="max-width: 200px;">
+            {% endif %}
+        </div>
+
+        <p><strong>Nome de usuário:</strong> {{ user.username }}</p>
+        <p><strong>E-mail:</strong> {{ user.email }}</p>
+
+        <!-- Exibindo o grupo do usuário -->
+        <p><strong>Grupo:</strong>
+            {% if user.groups.all %}
+            {% for group in user.groups.all %}
+                {{ group.name }}
+            {% endfor %}
+            {% else %}
+                Não atribuído
+            {% endif %}
+        </p>
+
+        <!-- Exibindo bio -->
+        <p><strong>Bio:</strong>
+            {% if user.userprofile.bio %}
+            {{ user.userprofile.bio }}
+            {% else %}
+            Bio não definida.
+            {% endif %}
+        </p>
+    </div>
+
+    {% if user.is_authenticated %}
+    <a href="{% url 'userapp:edit_profile' %}" class="btn">Editar Perfil</a><br>
+    <a href="{% url 'userapp:delete_account' %}" class="btn">Deletar Perfil</a><br>
+    <a href="{% url 'userapp:logout' %}" class="btn">Sair</a><br>
+    {% else %}
+    <a href="{% url 'userapp:login' %}">LOGIN</a>
+    {% endif %}
+
+    {% if user.is_superuser %}
+    <a href="{% url 'admin:index' %}">Sistema</a>
+    {% endif %}
+</div>
+{% endblock %}

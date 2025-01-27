@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1>Dashboard</h1>
+<div>
+    <h2>Usuários</h2>
+    <p>{{ total_users }}</p>
+</div>
+<div>
+    <h2>Egressos</h2>
+    <p>{{ total_egressos }}</p>
+</div>
+<div>
+    <h2>Visitantes</h2>
+    <p>{{ total_visitantes }}</p>
+</div>
+
+{% for classe in classes_data %}
+
+<h2>{{ classe.classe }}</h2>
+<div>
+    <div class="box_post">
+        <table>
+            <thead>
+                <tr>
+                    <th>Subclasses</th>
+                    <th>Tópicos</th>
+                    <th>Respostas</th>
+                    <th>Votos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ classe.total_topics }}</td>
+                    <td>{{ classe.total_replies }}</td>
+                    <td>{{ classe.total_subclasses }}</td>
+                    <td>{{ classe.total_votes }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    {% endfor %}
+
+
+</div>
+{% endblock %}

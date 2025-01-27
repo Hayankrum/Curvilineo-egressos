@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<title>{{ topic.title }} - Fórum</title>
+
+<h1>{{ topic.title }}</h1>
+<p>{{ topic.content }}</p>
+
+<p><strong>Autor:</strong> {{ topic.author.username }} | <strong>Criado em:</strong> {{ topic.created_at|date:"d/m/y" }}</p>
+<!-- Verifica se o usuário é o autor do tópico -->
+{% if user == topic.author %}
+<a href="{% url 'edit_topic' topic.id %}">Editar</a>
+<a href="{% url 'delete_topic' topic.id %}" onclick="return confirm('Tem certeza?');">Excluir</a>
+{% endif %}
+
+<h3>Tags:</h3>
+<ul>
+    {% for tag in tags %}
+    <li>{{ tag.name }}</li>
+    {% empty %}
+    <li>Sem tags associadas.</li>
+    {% endfor %}
+</ul>
+
+<h2>Respostas:</h2>
+<ul>
+    {% for reply in replies %}
+    <div class="box_post">
+
+
+        <li>
+            <p>{{ reply.author.username }} | {{ reply.created_at|date:"d/m/y" }}</p>
+            <p>{{ reply.content }}</p>
+            <p><strong>Votos:</strong> {{ reply.votes }}</p>
+
+            <!-- Botão para votar, só exibido para usuários autenticados -->
+            {% if user.is_authenticated %}
+            <form action="{% url 'vote_reply' reply.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit">Votar como útil</button>
+            </form>
+            {% else %}
+            <p>Você precisa estar <a href="{% url 'userapp:login' %}">logado</a> para votar.</p>
+            {% endif %}
+
+            {% if user == reply.author %} <!-- Verifica se o usuário é o autor da resposta -->
+            <a href="{% url 'edit_reply' reply.id %}">Editar</a>
+            <a href="{% url 'delete_reply' reply.id %}" onclick="return confirm('Tem certeza?');">Excluir</a>
+            {% endif %}
+        </li>
+    </div>
+    {% endfor %}
+</ul>
+
+<h3>Adicionar Resposta:</h3>
+{% if user.is_authenticated %}
+<form method="post" action="{% url 'add_reply' topic.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Adicionar Resposta</button>
+</form>
+{% else %}
+<p>Você precisa estar <a href="{% url 'userapp:login' %}">logado</a> para adicionar uma resposta.</p>
+{% endif %}
+
+<a href="{% url 'topic_list' topic.subcategoria.id %}">Voltar</a>
+
+{% endblock %}

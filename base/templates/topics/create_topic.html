@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<title>Criar Tópico - Fórum</title>
+
+<h1>Criar Tópico na Subcategoria: {{ subcategoria.name }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Criar Tópico</button>
+</form>
+
+<a href="{% url 'topic_list' subcategoria.id %}">Voltar</a>
+
+{% endblock %}

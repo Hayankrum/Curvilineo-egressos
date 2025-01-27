@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Tem certeza de que deseja excluir sua conta?</h2>
+
+<!-- Formulário para confirmação da exclusão -->
+<form method="POST">
+    {% csrf_token %}
+    
+    <!-- Campo para a senha -->
+    <label for="password">Digite sua senha para confirmar:</label>
+    <input type="password" name="password" required>
+    
+    <h3>Deseja excluir todas as suas ações dentro do app?</h3>
+    
+    <!-- Opções para excluir ou não as ações do usuário -->
+    <div>
+        <label for="delete_actions_yes">
+            <input type="radio" id="delete_actions_yes" name="delete_actions" value="yes" required>
+            Sim, excluir todas as minhas ações (tópicos, respostas, votos, etc.)
+        </label>
+    </div>
+    <div>
+        <label for="delete_actions_no">
+            <input type="radio" id="delete_actions_no" name="delete_actions" value="no" required>
+            Não, manter minhas ações para que elas ainda sejam relevantes para outros usuários
+        </label>
+    </div>
+    
+    <button type="submit">Sim, excluir minha conta</button>
+</form>
+
+<!-- Link para cancelar -->
+<a href="{% url 'userapp:profile' %}">Cancelar</a>
+{% endblock %}
